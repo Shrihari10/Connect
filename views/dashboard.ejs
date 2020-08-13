@@ -13,7 +13,7 @@
     
     <div class="container-fluid p-0">
     <nav class="navbar navbar-expand-lg d-flex justify-content-between">
-        <h2 class="m-0">Dashboard</h2>
+        <h2 class="m-0">Connect</h2>
         <p class="m-0">Welcome <%= user.name %></p>
         
     <ul id="icons" class="m-0 p-0">
@@ -44,49 +44,40 @@
     </ul>  
     <a href="/users/logout" class="btn btn-secondary border border-dark rounded-pill bg-dark text-white">Logout</a>
     </nav>
-        <!-- <div class="row">
-            <div class="post-topbar col-lg-6 col-md-8 no-pd">
-                <form action = "" autocomplete = "off" method = "POST">
-                    <input type="text" placeholder="Write something here!" class="form-control">
-                          <a class="btn-floating blue-gradient mt-0 float-left">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            <input type="file">
-                          </a>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        POST
-                      </button>
-                </form>
-            </div>
         
-        </div> -->
         <div class="row py-4">
             <div class="col-lg-6 mx-auto">
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+
                 <div class="border rounded-lg shadow p-3" style="height:380px">
                 <div class="form-group w-80" >
                         <label for="caption" class="p-1">Write your Thoughts</label>
                         <textarea class="form-control m-0" id="caption" rows="3"></textarea>
                 </div>
                 <!-- Upload image input-->
-                <input id="upload" type="file" onchange="loadFile(event);" class="form-control border-0 p-0">
+                <input id="upload" name="myImage" type="file" class="form-control border-0 p-0">
                     <button type="button" onclick="buttonClick(event);" class="btn btn-outline-dark rounded-pill float-left">
                         <i class="fa fa-cloud-upload mr-2 text-muted"></i>
                         <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
                     </button>
                 <!-- Uploaded image area-->
+                <%= typeof msg != 'undefined' ? msg : '' %>
                 <p class="font-italic text-black text-center">The image uploaded will be rendered below.</p>
-                <img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block">
+                <img id="imageResult" src="<%= typeof file != 'undefined' ? file : '' %>" class="img-fluid rounded shadow-sm mx-auto d-block">
 
-                <button type="button" class="btn btn-outline-dark rounded-pill float-right" >Post</button>
-                </div>
+                <button type="submit" class="btn btn-outline-dark rounded-pill float-right" >Post</button>
+                
+                    </div>
+                </form>
                 </div>
             </div>
         </div>
         <script src="https://use.fontawesome.com/1ae5e09574.js"></script>
         <script>
-            var loadFile = function(event) {
-	var image = document.getElementById('imageResult');
-	image.src = URL.createObjectURL(event.target.files[0]);
-};
+//             var loadFile = function(event) {
+// 	var image = document.getElementById('imageResult');
+// 	image.src = URL.createObjectURL(event.target.files[0]);
+// };
 
 var buttonClick = function(event){
     document.getElementById("upload").click();
