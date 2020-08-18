@@ -23,12 +23,5 @@ router.get('/dashboard',ensureAuthenticated, (req, res) => {
    
 });
 
-//  router.get('/dashboard/:id',ensureAuthenticated, (req, res) =>{
-//  user.findById(req.params.id).then (user => {
-//     res.render('dashboard.ejs', {
-//         userName: user.name
-//     })
-//     });
-// });
 
 module.exports = router;

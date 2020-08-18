@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type= "text/css" href="/css/style.css">
+    <title>App Chats</title>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg d-flex justify-content-between">
+            <h2 class="m-0">Connect</h2>
+            <p class="m-0">Welcome <span id="name"><%= sendUser.name%></span></p>
+            
+        <ul id="icons" class="m-0 p-0">
+            <li>
+                <a href="/dashboard">
+                    <div class="icon">
+                        <i class="fa fa-home fa-3x p-3" aria-hidden="true"></i>
+                    </div>
+                    <div class="name" data-text="Home">Home</div>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <div class="icon">
+                        <i class="fa fa-paper-plane fa-3x p-3" aria-hidden="true"></i>
+                    </div>
+                    <div class="name" data-text="Chats">Chats</div>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <div class="icon">
+                        <i class="fa fa-phone fa-3x p-3" aria-hidden="true"></i>
+                    </div>
+                    <div class="name" data-text="Calls">Calls</div>
+                </a>
+            </li>
+        </ul>  
+        <a href="/users/logout" class="btn btn-secondary border border-dark rounded-pill bg-dark text-white">Logout</a>
+        </nav>
+        
+
+        <div class="row">
+            <div class="col-2 m-4 ">
+                <div class="userList border rounded-lg shadow p-3">
+                    <h3> People</h3>
+                    <br>
+                    <% for(var i=0 ; i < usersList.length ; i++) {%>
+                        <div><%= usersList[i].name %></div>
+                        <br>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col m-4 border rounded-lg shadow p-3">
+                <div class="chat-messages"></div>
+                <div class="chat-form-container mt-4">
+                    <form id="chat-form">
+                      <input
+                        id="msg"
+                        type="text"
+                        placeholder="Enter Message"
+                        required
+                        autocomplete="off"
+                        class="border border-dark rounded-pill"
+                        style="width: 90%; padding: 10px; margin: 5px; border-width: 5px;"
+                        />
+                      <button class="btn btn-outline-dark rounded-pill float-right py-2"><i class="fa fa-paper-plane"></i> Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+    integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
+    crossorigin="anonymous"
+  ></script>
+  <script src="/socket.io/socket.io.js"></script>
+    <script src="https://use.fontawesome.com/1ae5e09574.js"></script>
+    <script>
+        const chatForm = document.getElementById('chat-form');
+        const chatMessages = document.querySelector('.chat-messages');
+        const socket = io();
+        
+        socket.on('message', (message) => {
+            // console.log(message);
+            outputMessage(message); 
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const userName = document.getElementById('name').innerText;
+            const msg = e.target.elements.msg.value;
+            const data = {userName, msg};
+
+            socket.emit('chatMessage', data);
+
+            e.target.elements.msg.value = '';
+            e.target.elements.msg.focus();
+        });
+
+        function outputMessage(message) {
+            const div = document.createElement('div');
+            div.classList.add('message');
+            div.innerHTML =    `<small class="meta"> ${message.username} <span> ${message.time}</span> </small>
+            <p class="text" style="font-size:18px;">
+                ${message.text}
+            </p>`;
+            document.querySelector('.chat-messages').appendChild(div);
+        }
+    </script>
+</body>
+</html>
